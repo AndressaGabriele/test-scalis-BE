@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Account, AccountDocument } from '../schemas/accounts.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Account } from '../entities/account.entity';
 
 @Injectable()
 export class AccountsService {
   constructor(
-    @InjectModel(Account.name) private accountModel: Model<AccountDocument>,
+    @InjectRepository(Account)
+    private accountRepository: Repository<Account>,
   ) {}
 
   async create(createAccountDto: {
@@ -14,53 +15,51 @@ export class AccountsService {
     checking: number;
     savings: number;
   }): Promise<Account> {
-    const createdAccount = new this.accountModel(createAccountDto);
-    return createdAccount.save();
+    const account = this.accountRepository.create(createAccountDto);
+    return this.accountRepository.save(account);
   }
 
   async findAll(): Promise<Account[]> {
-    return this.accountModel.find().exec();
+    return this.accountRepository.find();
   }
 
-  // Updated to use ID for finding an account
-  async findOne(id: string): Promise<Account> {
-    const account = await this.accountModel.findById(id).exec();
+  async findOne(id: number): Promise<Account> {
+    const account = await this.accountRepository.findOneBy({ id });
     if (!account) {
       throw new NotFoundException(`Account with ID "${id}" not found`);
     }
     return account;
   }
 
-  // Updated to use ID and adjusted logic for transferring funds
   async transferFunds(transferDto: {
-    from: string;
-    to: string;
+    fromUserName: string;
+    toUserName: string;
     amount: number;
-    userId: string;
   }): Promise<{ message: string }> {
-    const account = await this.accountModel.findById(transferDto.userId).exec();
+    const fromAccount = await this.accountRepository.findOneBy({
+      userName: transferDto.fromUserName,
+    });
+    const toAccount = await this.accountRepository.findOneBy({
+      userName: transferDto.toUserName,
+    });
 
-    if (!account) {
-      throw new Error('Account not found');
+    if (!fromAccount || !toAccount) {
+      throw new NotFoundException('One or both accounts not found');
     }
 
-    const { from, amount } = transferDto;
-
-    if (isNaN(amount) || amount <= 0) {
+    if (transferDto.amount <= 0) {
       throw new Error('Invalid transfer amount');
     }
 
-    if (from === 'checking' && account.checking >= amount) {
-      account.checking -= amount;
-      account.savings += amount;
-    } else if (from === 'savings' && account.savings >= amount) {
-      account.savings -= amount;
-      account.checking += amount;
+    if (fromAccount.checking >= transferDto.amount) {
+      fromAccount.checking -= transferDto.amount;
+      toAccount.checking += transferDto.amount;
     } else {
       throw new Error('Insufficient funds');
     }
 
-    await account.save();
+    await this.accountRepository.save(fromAccount);
+    await this.accountRepository.save(toAccount);
 
     return { message: 'Transfer successful' };
   }

@@ -1,6 +1,13 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { AccountsService } from '../service/accounts.service';
-import { Account } from '../schemas/accounts.model';
+import { Account } from '../entities/account.entity';
 
 @Controller('accounts')
 export class AccountsController {
@@ -24,7 +31,7 @@ export class AccountsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Account> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Account> {
     return this.accountsService.findOne(id);
   }
 
@@ -32,10 +39,9 @@ export class AccountsController {
   async transferFunds(
     @Body()
     transferDto: {
-      from: string;
-      to: string;
+      fromUserName: string;
+      toUserName: string;
       amount: number;
-      userId: string;
     },
   ): Promise<{ message: string }> {
     return this.accountsService.transferFunds(transferDto);

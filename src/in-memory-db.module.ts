@@ -1,19 +1,13 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    MongooseModule.forRootAsync({
-      useFactory: async () => {
-        const mongo = await MongoMemoryServer.create();
-        const uri = mongo.getUri();
-        return {
-          uri,
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        };
-      },
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: ':memory:',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
     }),
   ],
 })

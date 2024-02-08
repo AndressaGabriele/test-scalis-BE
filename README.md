@@ -1,88 +1,65 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# README for Test-Scalis-Backend
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Overview
 
-## Description
+This project is a backend application built using NestJS, a progressive Node.js framework for building efficient and scalable server-side applications. The application features an accounts management system, where users can create accounts, fetch account details, and transfer funds between accounts. It utilizes TypeORM for ORM (Object-Relational Mapping) with a SQLite database running in memory for data persistence, making it easy to test and demonstrate without the need for external database setup.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technologies Used
 
-## Installation
+- **NestJS**: A framework for building efficient, reliable, and scalable server-side applications.
+- **TypeORM**: An ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and supports the TypeScript and JavaScript (ES5, ES6, ES7, ES8).
+- **SQLite**: A C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine.
+- **Jest**: A delightful JavaScript Testing Framework with a focus on simplicity.
 
-```bash
-$ npm install
-```
+## Getting Started
 
-## Running the app
+To run this project, ensure that you have Node.js and npm installed on your system. Follow these steps to get the application up and running:
 
-```bash
-# development
-$ npm run start
+### Installation
 
-# watch mode
-$ npm run start:dev
+1. Clone the repository to your local machine.
+2. Navigate to the project directory and install the dependencies:
+   ```sh
+   npm install
+   ```
 
-# production mode
-$ npm run start:prod
-```
+### Running the Application
 
-## Test
+- To start the application in development mode with hot-reload:
+  ```sh
+  npm run start:dev
+  ```
+- The application will be available at `http://localhost:3002`.
 
-```bash
-# unit tests
-$ npm run test
+### Testing
 
-# e2e tests
-$ npm run test:e2e
+- Run unit tests with Jest:
+  ```sh
+  npm test
+  ```
+- To watch files for changes and rerun tests related to changed files:
+  ```sh
+  npm run test:watch
+  ```
+- For test coverage:
+  ```sh
+  npm run test:cov
+  ```
 
-# test coverage
-$ npm run test:cov
-```
+### API Endpoints
 
-## Support
+- **POST /accounts**: Create a new account with username, checking, and savings balance.
+- **GET /accounts**: Fetch all accounts.
+- **GET /accounts/:id**: Fetch an account by its ID.
+- **POST /accounts/transfer**: Transfer funds from one account to another.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## How It Works
 
-## Stay in touch
+The application uses NestJS modules to organize code related to accounts management. The `AccountsModule` encapsulates the accounts logic, including controllers for handling HTTP requests, services for business logic, and entities for database interaction. It utilizes TypeORM for database operations, allowing for easy data manipulation and querying. The SQLite in-memory database is configured for ease of demonstration and testing, requiring no external database setup.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+This setup demonstrates a microservice or backend service architecture, focusing on domain-driven design principles and clean architecture, suitable for scaling and maintenance in enterprise applications.
 
-## License
+## Conclusion
 
-Nest is [MIT licensed](LICENSE).
-
-
-## step-by-step
-
-create application
-```
-npm i -g @nestjs/cli
-nest new test-scalis-BE
-```
-
-add in memory db
-```
-npm install --save @nestjs/mongoose mongoose mongodb-memory-server
-```
-
+This README provides a basic guide to getting started with the test project for Scalis.ai. It outlines the technology stack used, steps for installation, running the application, and testing. This project demonstrates proficiency in backend development, particularly with NestJS, TypeORM, and testing with Jest.
